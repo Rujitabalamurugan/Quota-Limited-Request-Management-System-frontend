@@ -12,7 +12,7 @@ export function SpamPage() {
   useEffect(() => {
     const fetchMessages = async () => {
       try {
-        const response = await fetch('http://127.0.0.1:5000/messages');
+        const response = await fetch(`${process.env.REACT_APP_API_URL || `${process.env.REACT_APP_API_URL || 'http://127.0.0.1:5000'}'}/messages');
         if (response.ok) {
           const data = await response.json();
           const formattedMessages = data
@@ -45,7 +45,7 @@ export function SpamPage() {
     setViewingMessage(msg);
     if (msg.status === 'unread') {
       try {
-        await fetch(`http://127.0.0.1:5000/messages/${msg._rawId}/read`, { method: 'POST' });
+        await fetch(`${process.env.REACT_APP_API_URL || `${process.env.REACT_APP_API_URL || 'http://127.0.0.1:5000'}'}/messages/${msg._rawId}/read`, { method: 'POST' });
         setMessages(messages.map(m => m._rawId === msg._rawId ? { ...m, status: 'read' } : m));
       } catch (err) {
         console.error("Failed to mark as read");

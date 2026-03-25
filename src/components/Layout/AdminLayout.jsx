@@ -11,7 +11,7 @@ export function AdminLayout() {
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        const res = await fetch('http://127.0.0.1:5000/profile');
+        const res = await fetch(`${process.env.REACT_APP_API_URL || `${process.env.REACT_APP_API_URL || 'http://127.0.0.1:5000'}'}/profile');
         if (res.ok) {
           const data = await res.json();
           setProfile({ name: data.name || 'Admin', avatar: data.avatar });

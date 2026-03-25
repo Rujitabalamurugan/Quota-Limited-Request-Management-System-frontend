@@ -12,7 +12,7 @@ export function MessagesPage() {
   useEffect(() => {
     const fetchMessages = async () => {
       try {
-        const response = await fetch('http://127.0.0.1:5000/messages');
+        const response = await fetch(`${process.env.REACT_APP_API_URL || `${process.env.REACT_APP_API_URL || 'http://127.0.0.1:5000'}'}/messages');
         if (response.ok) {
           const data = await response.json();
           // The backend returns a list of dictionaries with status 'Spam' or 'Valid'
@@ -54,7 +54,7 @@ export function MessagesPage() {
     // If it's unread, mark it as read in backend
     if (msg.status === 'unread') {
       try {
-        await fetch(`http://127.0.0.1:5000/messages/${msg._rawId}/read`, { method: 'POST' });
+        await fetch(`${process.env.REACT_APP_API_URL || `${process.env.REACT_APP_API_URL || 'http://127.0.0.1:5000'}'}/messages/${msg._rawId}/read`, { method: 'POST' });
         setMessages(messages.map(m => m._rawId === msg._rawId ? { ...m, status: 'read' } : m));
       } catch (err) {
         console.error("Failed to mark as read");
@@ -66,7 +66,7 @@ export function MessagesPage() {
     e.stopPropagation();
     if (window.confirm("Are you sure you want to delete this message?")) {
       try {
-        await fetch(`http://127.0.0.1:5000/messages/${msgId}`, { method: 'DELETE' });
+        await fetch(`${process.env.REACT_APP_API_URL || `${process.env.REACT_APP_API_URL || 'http://127.0.0.1:5000'}'}/messages/${msgId}`, { method: 'DELETE' });
         setMessages(messages.filter(m => m._rawId !== msgId));
       } catch(err) {
         console.error("Failed to delete", err);
@@ -264,12 +264,12 @@ export function MessagesPage() {
                 {(viewingMessage.approvalStatus === 'Pending' || viewingMessage.approvalStatus === 'Valid') && (
                   <>
                     <Button className="bg-emerald-600 hover:bg-emerald-700 text-white" onClick={async () => {
-                      await fetch(`http://127.0.0.1:5000/messages/${viewingMessage._rawId}/approve`, { method: 'POST' });
+                      await fetch(`${process.env.REACT_APP_API_URL || `${process.env.REACT_APP_API_URL || 'http://127.0.0.1:5000'}'}/messages/${viewingMessage._rawId}/approve`, { method: 'POST' });
                       setMessages(messages.map(m => m._rawId === viewingMessage._rawId ? { ...m, approvalStatus: 'Approved' } : m));
                       setViewingMessage({ ...viewingMessage, approvalStatus: 'Approved' });
                     }}>Approve</Button>
                     <Button className="bg-rose-600 hover:bg-rose-700 text-white" onClick={async () => {
-                      await fetch(`http://127.0.0.1:5000/messages/${viewingMessage._rawId}/reject`, { method: 'POST' });
+                      await fetch(`${process.env.REACT_APP_API_URL || `${process.env.REACT_APP_API_URL || 'http://127.0.0.1:5000'}'}/messages/${viewingMessage._rawId}/reject`, { method: 'POST' });
                       setMessages(messages.map(m => m._rawId === viewingMessage._rawId ? { ...m, approvalStatus: 'Rejected' } : m));
                       setViewingMessage({ ...viewingMessage, approvalStatus: 'Rejected' });
                     }}>Reject</Button>

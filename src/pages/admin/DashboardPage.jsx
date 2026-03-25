@@ -37,7 +37,7 @@ export function DashboardPage() {
   useEffect(() => {
     const fetchDashboardData = async () => {
       try {
-        const response = await fetch('http://127.0.0.1:5000/messages');
+        const response = await fetch(`${process.env.REACT_APP_API_URL || `${process.env.REACT_APP_API_URL || 'http://127.0.0.1:5000'}'}/messages');
         if (response.ok) {
           const data = await response.json();
           const allMsgs = data.reverse(); // Newest first
